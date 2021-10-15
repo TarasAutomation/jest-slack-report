@@ -1,0 +1,32 @@
+{
+  "name": "jest-slack-report",
+  "version": "0.0.1",
+  "description": "Publish your test results to your slack channel.",
+  "main": "src/slack-report.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TarasAutomation/jest-slack-report.git"
+  },
+  "keywords": [
+    "jest",
+    "slack",
+    "reporter",
+    "integration"
+  ],
+  "author": "Taras Tester",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/TarasAutomation/jest-slack-report/issues"
+  },
+  "homepage": "https://github.com/TarasAutomation/jest-slack-report#readme",
+  "devDependencies": {
+    "jest": "^27.2.4"
+  },
+  "dependencies": {
+    "axios": "^0.22.0",
+    "dotenv": "^10.0.0"
+  }
+}
