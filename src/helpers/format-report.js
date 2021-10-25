@@ -1,17 +1,44 @@
-
-const formatReport = (results) => {
-    let report = '';
+const formatReport = (results, options) => {
+    console.log(results);
+    let testResults = '';
     results.testResults.forEach(result => {
         const describeTitle = result.testResults[0].ancestorTitles;
         if (describeTitle.length)
-            report += `*${describeTitle}*\n`;
-        report += `_${result.testFilePath}_\n`;
+            testResults += `*${describeTitle}*\n`;
+        if (options.includeFilePath)
+            testResults += `_${result.testFilePath}_\n`;
         result.testResults.forEach(testResult => {
-            report += `${testResult.title} - ${testResult.status}\n`
+            const {status} = testResult;
+            testResults += `${testResult.title} - ${options.statuses ? getStatusIcon(status, options) : status}\n`
         })
-        report += `\n`;
+        testResults += `\n`;
     })
-    return report;
+
+    const status = results.numTotalTests === results.numPassedTests
+        ? 'Success'
+        : results.numTotalTests === results.numFailedTests
+            ? 'Failure'
+            : 'Unstable'
+
+    const statusColor = status === 'Success'
+        ? '#00FF00'
+        : status === 'Failure'
+            ? '#FF0000'
+            : '#FFEA00'
+
+    let title = `Test run finished. Status: ${status}\n`;
+    title += `Passed: ${results.numPassedTests}, Failed: ${results.numFailedTests}, Skipped: ${results.numPendingTests}\n`
+    title += `Individual test results:`
+    return {title: title, tests: testResults, statusColor: statusColor};
+}
+
+const getStatusIcon = (status, options) => {
+    const {passed, failed, skipped} = options.statuses;
+    switch (status){
+        case 'passed': return passed;
+        case 'failed': return failed;
+        case 'pending': return skipped;
+    }
 }
 
 

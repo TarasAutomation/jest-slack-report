@@ -14,7 +14,7 @@ class SlackReport {
 
     onRunComplete(contexts, results) {
         console.log('Formatting the report.');
-        const formattedReport = formatReport(results);
+        const formattedReport = formatReport(results, this.options);
         console.log('Sending report to the Slack channel');
         sendReport(this.slackWebhookURL, formattedReport);
     }
