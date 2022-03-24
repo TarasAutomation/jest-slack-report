@@ -12,11 +12,11 @@ class SlackReport {
             this.slackWebhookURL = process.env.SLACK_WEBHOOK_URL;
     }
 
-    onRunComplete(contexts, results) {
+    async onRunComplete(contexts, results) {
         console.log('Formatting the report.');
         const formattedReport = formatReport(results, this.options);
         console.log('Sending report to the Slack channel');
-        sendReport(this.slackWebhookURL, formattedReport);
+        await sendReport(this.slackWebhookURL, formattedReport);
     }
 }
 

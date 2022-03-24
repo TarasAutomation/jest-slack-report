@@ -1,20 +1,24 @@
 const formatReport = (results, options) => {
-    console.log(results);
     let testResults = '';
     results.testResults.forEach(result => {
+        if (!result.testResults.every(t => (t.status === "passed" && options.hidePassed) || (t.status === "pending" && options.hideSkipped))) {
         const describeTitle = result.testResults[0].ancestorTitles;
-        if (describeTitle.length)
-            testResults += `*${describeTitle}*\n`;
-        if (options.includeFilePath)
-            testResults += `_${result.testFilePath}_\n`;
-        result.testResults.forEach(testResult => {
-            const {status} = testResult;
-            testResults += `${testResult.title} - ${options.statuses ? getStatusIcon(status, options) : status}\n`
-        })
-        testResults += `\n`;
+            if (describeTitle.length)
+                testResults += `*${describeTitle}*\n`;
+            if (options.includeFilePath)
+                testResults += `_${result.testFilePath}_\n`;
+            result.testResults.forEach(testResult => {
+                const {status} = testResult;
+                console.log(status)
+                if (!((status === "passed" && options.hidePassed) || (status === "pending" && options.hideSkipped))) {
+                    testResults += `${testResult.title} - ${options.statuses ? getStatusIcon(status, options) : status}\n`
+                }
+            })
+            testResults += `\n`;
+        }
     })
 
-    const status = results.numTotalTests === results.numPassedTests
+    const status = results.numTotalTests - results.numPendingTests === results.numPassedTests
         ? 'Success'
         : results.numTotalTests === results.numFailedTests
             ? 'Failure'
@@ -34,10 +38,13 @@ const formatReport = (results, options) => {
 
 const getStatusIcon = (status, options) => {
     const {passed, failed, skipped} = options.statuses;
-    switch (status){
-        case 'passed': return passed;
-        case 'failed': return failed;
-        case 'pending': return skipped;
+    switch (status) {
+        case 'passed':
+            return passed;
+        case 'failed':
+            return failed;
+        case 'pending':
+            return skipped;
     }
 }
 
