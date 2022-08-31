@@ -32,7 +32,12 @@ const formatReport = (results, options) => {
 
     let title = `Test run finished. Status: ${status}\n`;
     title += `Passed: ${results.numPassedTests}, Failed: ${results.numFailedTests}, Skipped: ${results.numPendingTests}\n`
+    if (results.numFailedTests === 0) {
+    title += `:large_green_circle:  All tests passed  :large_green_circle:`
+    }
+    else{
     title += `Individual test results:`
+}
     return {title: title, tests: testResults, statusColor: statusColor};
 }
 
